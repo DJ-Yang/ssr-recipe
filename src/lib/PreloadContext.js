@@ -8,7 +8,7 @@ export default PreloadContext;
 // resolve는 함수 타입입니다.
 export const Preloader = ({ resolve }) => {
   const preloadContext = useContext(PreloadContext);
-  if (!preloadContext) return null;  // context 값이 유효하지 않다면 아무것도 하지 않음
+  if (!preloadContext) return null; // context 값이 유효하지 않다면 아무것도 하지 않음
   if (preloadContext.done) return null; // 이미 작업이 끝났다면 아무것도 하지 않음
 
   // promise 배열에 프로미스 등록
@@ -16,4 +16,12 @@ export const Preloader = ({ resolve }) => {
   // Promise.resolve 함수 사용
   preloadContext.promises.push(Promise.resolve(resolve()));
   return null;
+};
+
+// Hook 형태로 사용할 수 있는 함수
+export const usePreloader = (resolve) => {
+  const preloadContext = useContext(PreloadContext);
+  if (!preloadContext) return null;
+  if (preloadContext.done) return null;
+  preloadContext.promises.push(Promise.resolve(resolve()));
 };
